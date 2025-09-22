@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { Trash2, SquareArrowOutDownRightIcon } from 'lucide-react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Patient } from '../types/Patient';
@@ -32,20 +31,9 @@ const PatientListScreen: React.FC<Props> = ({ navigation }) => {
 
   const renderItem = ({ item }: { item: Patient }) => (
     <TouchableOpacity>
-      <View className="bg-white p-4 my-2 rounded-lg shadow-sm">
-        <View className="flex-row justify-between">
-          <Text className="text-lg font-bold text-gray-800 flex-1">{`${item.fname} ${item.lname}`}</Text>
-          <View className="flex-row flex-1 justify-end">
-            <Trash2 size={20} style={{ marginRight: 10 }} />
-            <SquareArrowOutDownRightIcon
-              size={20}
-              style={{ marginRight: 10 }}
-            />
-          </View>
-        </View>
-        <Text className="p-2 my-3 bg-green-800 flex-wrap color-white font-bold rounded-full w-auto self-start">
-          Relative
-        </Text>
+      <View className="bg-white p-4 my-2 rounded-lg shadow-sm flex-row">
+        <Text className="text-lg font-bold text-gray-800">{`${item.fname} ${item.lname}`}</Text>
+        <View></View>
       </View>
     </TouchableOpacity>
   );
