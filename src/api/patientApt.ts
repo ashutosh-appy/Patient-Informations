@@ -48,7 +48,6 @@ export const patientsApi = createApi({
         };
       },
       transformResponse: (response: FetchPatientsResponse) => {
-        console.log('response', JSON.stringify(response, null, 2));
         return response.response.list ?? [];
       },
       providesTags: ['Patients'],
@@ -68,6 +67,9 @@ export const patientsApi = createApi({
           method: 'POST',
           body: formData,
         };
+      },
+      transformResponse: (response: any) => {
+        console.log('Add Patient Response:', JSON.stringify(response, null, 2));
       },
       invalidatesTags: ['Patients'],
     }),

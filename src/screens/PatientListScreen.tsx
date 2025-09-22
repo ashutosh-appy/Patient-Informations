@@ -11,6 +11,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Patient } from '../types/Patient';
 import { useGetPatientsQuery } from '../api/patientApt';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 type PatientListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -22,7 +24,8 @@ type Props = {
 };
 
 const PatientListScreen: React.FC<Props> = ({ navigation }) => {
-  const { data, isLoading, error } = useGetPatientsQuery('1000596100');
+  const { isLoading, error } = useGetPatientsQuery('1000596100');
+  const patients = useSelector((state: RootState) => state.patient.patients);
 
   if (isLoading) return <ActivityIndicator size="large" />;
   if (error) {
@@ -62,7 +65,7 @@ const PatientListScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View className="flex-1 px-4">
-      <FlatList data={data} renderItem={renderItem} />
+      <FlatList data={patients} renderItem={renderItem} />
       {renderFloatingButton()}
     </View>
   );
