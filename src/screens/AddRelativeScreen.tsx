@@ -5,7 +5,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { addPatient } from '../redux/slices/patientSlice';
 import { Patient } from '../types/Patient';
 
-const AddPatientScreen: React.FC = ({ navigation }: any) => {
+const AddRelativeScreen: React.FC = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
@@ -71,4 +71,4 @@ const AddPatientScreen: React.FC = ({ navigation }: any) => {
   );
 };
 
-export default AddPatientScreen;
+export default AddRelativeScreen;

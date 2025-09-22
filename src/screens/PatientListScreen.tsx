@@ -42,7 +42,7 @@ const PatientListScreen: React.FC<Props> = ({ navigation }) => {
     return (
       <TouchableOpacity
         className="absolute bottom-4 right-4 bg-blue-500  rounded-full shadow-lg h-20 w-20 items-center justify-center"
-        onPress={() => navigation.navigate('AddPatient')}
+        onPress={() => navigation.navigate('AddRelative')}
       >
         <Text className="text-white text-5xl font-bold">+</Text>
       </TouchableOpacity>
