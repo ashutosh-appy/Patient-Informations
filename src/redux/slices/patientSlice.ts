@@ -14,8 +14,16 @@ const patientSlice = createSlice({
   name: 'patient',
   initialState,
   reducers: {
+    addPatient: (state, action: PayloadAction<Patient>) => {
+      state.patients.push(action.payload);
+    },
     setPatients: (state, action: PayloadAction<Patient[]>) => {
       state.patients = action.payload;
+    },
+    deletePatient: (state, action: PayloadAction<string>) => {
+      state.patients = state.patients.filter(
+        patient => patient.userid !== action.payload,
+      );
     },
   },
   extraReducers: builder => {
@@ -28,6 +36,6 @@ const patientSlice = createSlice({
   },
 });
 
-export const { setPatients } = patientSlice.actions;
+export const { addPatient, setPatients, deletePatient } = patientSlice.actions;
 
 export default patientSlice.reducer;

@@ -1,18 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { Trash2, SquareArrowOutDownRightIcon } from 'lucide-react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Trash2 } from 'lucide-react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Patient } from '../types/Patient';
 import { useGetPatientsQuery } from '../api/patientApt';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import { deletePatient } from '../redux/slices/patientSlice';
 
 type PatientListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,32 +19,35 @@ type Props = {
 };
 
 const PatientListScreen: React.FC<Props> = ({ navigation }) => {
-  const { isLoading, error } = useGetPatientsQuery('1000596100');
+  const { error } = useGetPatientsQuery('1000596100');
   const patients = useSelector((state: RootState) => state.patient.patients);
+  const dispatch = useDispatch();
 
-  if (isLoading) return <ActivityIndicator size="large" />;
   if (error) {
     return <Text>Error loading patients</Text>;
   }
 
+  const handleDelete = (userrelationid: string) => {
+    dispatch(deletePatient(userrelationid));
+  };
+
   const renderItem = ({ item }: { item: Patient }) => (
-    <TouchableOpacity>
-      <View className="bg-white p-4 my-2 rounded-lg shadow-sm">
-        <View className="flex-row justify-between">
-          <Text className="text-lg font-bold text-gray-800 flex-1">{`${item.fname} ${item.lname}`}</Text>
-          <View className="flex-row flex-1 justify-end">
+    <View className="bg-white p-4 my-2 rounded-lg shadow-sm">
+      <View className="flex-row justify-between">
+        <Text className="text-lg font-bold text-gray-800 flex-1">{`${item.fname} ${item.lname}`}</Text>
+        <View className="flex-row flex-1 justify-end">
+          <TouchableOpacity
+            className="ph-4 pb-4"
+            onPress={() => handleDelete(item.userid)}
+          >
             <Trash2 size={20} style={{ marginRight: 10 }} />
-            <SquareArrowOutDownRightIcon
-              size={20}
-              style={{ marginRight: 10 }}
-            />
-          </View>
+          </TouchableOpacity>
         </View>
-        <Text className="p-2 my-3 bg-green-800 flex-wrap color-white font-bold rounded-full w-auto self-start">
-          Relative
-        </Text>
       </View>
-    </TouchableOpacity>
+      <Text className="p-2 my-3 bg-green-800 flex-wrap color-white font-bold rounded-full w-auto self-start">
+        Relative
+      </Text>
+    </View>
   );
 
   const renderFloatingButton = () => {

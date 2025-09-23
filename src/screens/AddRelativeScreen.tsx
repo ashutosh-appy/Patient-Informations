@@ -1,33 +1,42 @@
 import React from 'react';
-import { AddPatientPayload } from '../types/Patient';
+import { AddPatientPayload, Patient } from '../types/Patient';
 import AddRelativeForm from '../components/AddRelativeForm';
-import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, ActivityIndicator, Alert } from 'react-native';
 import { useAddPatientMutation } from '../api/patientApt';
+import { useDispatch } from 'react-redux';
+import { addPatient as addPatientToState } from '../redux/slices/patientSlice';
 
 const AddRelativeScreen: React.FC = ({ navigation }: any) => {
-  const [addPatient] = useAddPatientMutation();
+  const [addPatient, { isLoading }] = useAddPatientMutation();
+  const dispatch = useDispatch();
   const handleFormSubmit = async (data: AddPatientPayload) => {
     try {
-      const payload = {
-        ...data,
-        address: '',
+      await addPatient(data).unwrap();
+      const newPatient: Partial<Patient> = {
+        userid: `temp-${Date.now()}`,
+        fname: data.fname,
+        lname: data.lname,
       };
-      console.log('Submitting form with data:', payload);
-      await addPatient(payload).unwrap();
+      dispatch(addPatientToState(newPatient as Patient));
       Alert.alert('Success', 'Patient added successfully');
       navigation.goBack();
     } catch (error) {
       console.error('Failed to add patient:', JSON.stringify(error, null, 2));
-      Alert.alert('Error', 'Failed to add patient');
+      Alert.alert(
+        'Error',
+        `Failed to add patient: ${error.data?.message || 'Unknown error'}`,
+      );
     }
   };
   return (
-    <KeyboardAvoidingView
-      className="flex-1 bg-white"
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View className="flex-1 bg-white">
       <AddRelativeForm onSubmit={handleFormSubmit} />
-    </KeyboardAvoidingView>
+      {isLoading && (
+        <View className="absolute inset-0 items-center justify-center opacity-70 bg-black">
+          <ActivityIndicator size="large" color="#ffffff" />
+        </View>
+      )}
+    </View>
   );
 };
 

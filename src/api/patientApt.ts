@@ -60,7 +60,6 @@ export const patientsApi = createApi({
             formData.append(key, value);
           }
         });
-        console.log('formData', JSON.stringify(formData, null, 2));
 
         return {
           url: '/addrelatives',
@@ -68,10 +67,6 @@ export const patientsApi = createApi({
           body: formData,
         };
       },
-      transformResponse: (response: any) => {
-        console.log('Add Patient Response:', JSON.stringify(response, null, 2));
-      },
-      invalidatesTags: ['Patients'],
     }),
   }),
 });
