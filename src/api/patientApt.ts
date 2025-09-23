@@ -7,7 +7,6 @@ import {
 
 const headers = {
   Apiversion: 'v3',
-  Appversion: '0.0.30-DEBUG',
   Appversioncode: '56',
   Orgid: '614',
   Apikey: 'de3f1c39f8c03a3401303fdeb9748668',
@@ -61,6 +60,7 @@ export const patientsApi = createApi({
             formData.append(key, value);
           }
         });
+        console.log('formData', JSON.stringify(formData, null, 2));
 
         return {
           url: '/addrelatives',

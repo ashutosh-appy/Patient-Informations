@@ -1,19 +1,18 @@
 import React from 'react';
 import { AddPatientPayload } from '../types/Patient';
 import AddRelativeForm from '../components/AddRelativeForm';
-import { View, ActivityIndicator, Alert } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { useAddPatientMutation } from '../api/patientApt';
 
 const AddRelativeScreen: React.FC = ({ navigation }: any) => {
-  const [addPatient, { isLoading }] = useAddPatientMutation();
+  const [addPatient] = useAddPatientMutation();
   const handleFormSubmit = async (data: AddPatientPayload) => {
     try {
       const payload = {
         ...data,
-        userid: '1000596100',
-        orgid: '614',
         address: '',
       };
+      console.log('Submitting form with data:', payload);
       await addPatient(payload).unwrap();
       Alert.alert('Success', 'Patient added successfully');
       navigation.goBack();
@@ -23,10 +22,12 @@ const AddRelativeScreen: React.FC = ({ navigation }: any) => {
     }
   };
   return (
-    <View className="flex-1 bg-white">
+    <KeyboardAvoidingView
+      className="flex-1 bg-white"
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <AddRelativeForm onSubmit={handleFormSubmit} />
-      {isLoading && <ActivityIndicator size="large" />}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
